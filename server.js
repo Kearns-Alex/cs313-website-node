@@ -11,7 +11,5 @@ express()
   .set('view engine', 'ejs')
 // specific page request
 //* ROOT
-  .get('/', function(req, res) {
-    res.render('pages/index');
-  })
+  .get('/', (req, res) => res.render('pages/index'))
   .listen(PORT, () => console.log(`Listening on ${ PORT }`))
