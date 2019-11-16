@@ -1,0 +1,34 @@
+1.) create the repository in GitHub
+2.) download the repository your hard drive through github
+3.) clone the heroku starting project and place it into a temp location
+	git clone https://github.com/heroku/node-js-getting-started.git temp
+4.) install the depenancies
+	npm install express --save
+	npm install ejs --save
+5.) create the heroku app
+	heroku create
+6.) rename to a better domain
+	heroku apps:rename *newname
+7.) Update files (they give you lots to work with)
+	- rename index.js to server.js
+	- rename the line found in Procfile to match 'server.js'
+8.) add all of the new files that you want
+	git add *
+9.) commit any changes
+	git commit -m "I made changes"
+10.) push to the master
+	git push heroku master
+	'heroku' is the name of the git repository
+
+References
+https://content.byui.edu/file/14882098-ce1f-44ba-a196-a7aebcb3d5ce/1/week01/prove.html
+https://content.byui.edu/file/14882098-ce1f-44ba-a196-a7aebcb3d5ce/1/week01/commands.pdf
+
+git remote -v
+heroku login
+heroku create
+git push heroku master
+heroku apps:rename kearns-cs313
+git status
+git add *
+git commit -m "comment for the commit"
