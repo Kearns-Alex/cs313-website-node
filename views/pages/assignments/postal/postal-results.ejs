@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Postal Results</title>
+  <!-- Head -->
+  <% include ../../../partials/head.ejs %>
+</head>
+
+<body class="bg-primary container-fluid">
+  <!-- Header -->
+  <% include ../../../partials/header.ejs %>
+
+  <!-- Navigation bar -->
+  <% include ../../../partials/nav.ejs %>
+
+  <!-- Content -->
+  <br>
+  <div id="content" class="container">
+    <h1>Postal Results</h1>
+    
+    <p>In order to ship ship your "<%= weight %> oz" "<%= mailType %>", it will cost you $<%= total %></p>
+
+    <p>I hope you have enough money to spend for this package!</p>
+
+  </div>
+
+</body>
+</html>

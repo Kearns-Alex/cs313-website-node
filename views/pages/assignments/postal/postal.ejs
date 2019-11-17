@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Postal Submission Form</title>
+  <!-- Head -->
+  <% include ../../../partials/head.ejs %>
+</head>
+
+<body class="bg-primary container-fluid">
+  <!-- Header -->
+  <% include ../../../partials/header.ejs %>
+
+  <!-- Navigation bar -->
+  <% include ../../../partials/nav.ejs %>
+
+  <!-- Content -->
+  <br>
+  <div id="content" class="container">
+
+    <h1>Postal Submission Form</h1>
+    <form action="/postal-submit" method="get">
+      <div class="row">
+
+        <div class="col-sm-7">
+          <label for="mailType">Select your mail type:</label>
+          <select class="form-control" name="mailType" id="mailType">
+            <option>Letters (Stamped)</option>
+            <option>Letters (Metered)</option>
+            <option>Large Envelopes (Flats)</option>
+            <option>Postcards</option>
+            <option>EDDM—Retail</option>
+            <option>Semipostal Stamps</option>
+            <option>Keys and Identification Devices</option>
+          </select>
+        </div>
+
+        <div class="col-sm-5">
+          <label for="weight">How many oz:</label>
+          <input type="number" class="form-control" name="weight" id="weight">
+        </div>
+
+      </div>
+
+      <br>
+      <input type="submit" class="btn btn-success" value="Get Rate">
+
+    </form>
+  </div>
+  
+</body>
+</html>
