@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Login</title>
+  <!-- Head -->
+  <% include ../../../partials/head.ejs %>
+</head>
+
+<body class="chat container-fluid">
+  <!-- Header -->
+  <% include ../../../partials/header.ejs %>
+
+  <!-- Navigation bar -->
+  <% include ../../../partials/nav.ejs %>
+
+  <!-- Content -->
+  <br>
+  <div id="content" class="container">
+  <h1>Simple Chatroom</h1>
+
+  <p class="text-warning" id="error_message"><%= message %></p>
+
+  <form action="/chat-login-check" method="POST">
+    <div class="form-group">
+      <label for="username">Username:</label>
+      <input type="text" name="username" id="username" class="form-control" placeholder="username" />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password:</label>
+      <input type="password" name="password" id="password" class="form-control" placeholder="password" />
+    </div>
+    
+    <button type="submit" class="btn btn-primary btn-lg btn-block" name="submit[]" value="login">Login</button>
+
+    <button type="submit" class="btn btn-success btn-lg btn-block" name="submit[]" value="create">Create</button>
+  </form>
+
+  <p class="">Creating your own name and password? Just fill out the two textboxes and click create! Your credintials will be created and log you in automatically! It is that simple!</p>
+  </div>
+
+  <!-- Footer -->
+  <% include ../../../partials/footer.ejs %>
+  
+</body>
+</html>

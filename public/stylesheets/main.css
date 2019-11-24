@@ -1,3 +1,33 @@
 .link {
     color:rgb(0, 247, 255);
 }
+
+body.chat {
+    background-color: #1b97e4;
+}
+
+.table-striped:nth-of-type(odd) {
+    background-color: #ffffff;
+  }
+  
+.table-striped:nth-of-type(even) {
+    background-color: #b9b9b9;
+}
+
+.scroll {
+    height: 330px;
+    overflow-y: auto;
+}
+
+.chat {
+    height: 650px;
+    overflow-y: auto;
+}
+
+th {
+    float: left;
+}
+
+td {
+    padding: 0px;
+}

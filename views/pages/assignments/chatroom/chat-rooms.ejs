@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <title>Chatrooms</title>
+  <!-- Head -->
+  <% include ../../../partials/head.ejs %>
+</head>
+
+<body class="chat container-fluid">
+  <!-- Header -->
+  <% include ../../../partials/header.ejs %>
+
+  <!-- Navigation bar -->
+  <% include ../../../partials/nav.ejs %>
+
+  <!-- Content -->
+  <br>
+  <div id="content" class="container">
+    <h1>Welcome <%= username %>!</h1>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="searchName">Search Rooms:</label>
+          <input type="text" name="searchName" id="searchName" class="form-control" placeholder="search rooms" />
+        </div>
+        
+        <button type="button" value="search" class="btn btn-primary" onclick="Search();">Search</button>
+
+        <button type="button" value="refresh" class="btn btn-primary" onclick="Refresh();">Refresh</button>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="roomName">New Room:</label>
+          <input type="text" name="roomName" id="roomName" class="form-control" placeholder="new room" />
+        </div>
+    
+        <button type="button" value="create" class="btn btn-primary" onclick="DoCreate();">Create</button>
+      </div>
+      <div class="col-sm-3">
+        <div class="form-group">
+          <label for="roomPass">Password:</label>
+          <input type="password" name="roomPass" id="roomPass" class="form-control" placeholder="room pass" />
+        </div>
+      </div>
+    </div>
+
+    <h2>Chatrooms</h2>
+
+    <table class="table table-striped table-hover table-items">
+      <tr>
+        <th width="40%">Room</th>
+        <th width="30%">Creator</th>
+        <th width="10%">Pass</th>
+        <th width="20%"> </th>
+      </tr>
+    </table>
+
+    <div class="table-responsive scroll">
+      <form method="post" target="_blank" action="php/password-helper.php">
+        <table class="table table-striped table-hover table-items">
+
+        <tbody id="results">
+
+        </tbody>
+        
+        </table>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <% include ../../../partials/footer.ejs %>
+  
+</body>
+</html>
