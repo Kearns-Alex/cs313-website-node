@@ -3,7 +3,7 @@ require('dotenv').config();
 const { Pool } = require("pg");
 
 //* the connection string DATABASE_URL is found in the .env file
-const connectionString = process.env.DATABASE_URL
+const connectionString = 'postgres://kmxeareumdzepa:fd3366aa131d7f7628d27c3e8be3099c0401a4a59dda8f012685bff62733a2e8@ec2-54-227-251-33.compute-1.amazonaws.com:5432/dc0im1dt2s4blc?ssl=true'
 const pool = new Pool({connectionString: connectionString})
 
 //* Pages
