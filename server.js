@@ -2,7 +2,6 @@
 const express = require('express')
 const path = require('path')
 var session = require('express-session');
-//var cookieParser = require('cookie-parser');
 
 //* Controller libraries
 const homeController = require("./controllers/homeController.js");
@@ -15,8 +14,11 @@ express()
   .use(express.static(path.join(__dirname, 'public')))
   .use(express.json())                        // support for json ecodded bodies
   .use(express.urlencoded({extended: true}))  // support url encoded bodies
-  //.use(cookieParser())
-  .use(session({secret: "Shh, its a secret!"}))
+  .use(session({
+    secret: "Shh, its a secret!",
+    resave: false,
+    saveUninitialized: true
+  }))
 
 //* Setting up the views 
   .set('views', path.join(__dirname, 'views'))

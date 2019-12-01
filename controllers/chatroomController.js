@@ -4,16 +4,28 @@ const { Pool } = require("pg");
 
 //* the connection string DATABASE_URL is found in the .env file
 const connectionString = 'postgres://kmxeareumdzepa:fd3366aa131d7f7628d27c3e8be3099c0401a4a59dda8f012685bff62733a2e8@ec2-54-227-251-33.compute-1.amazonaws.com:5432/dc0im1dt2s4blc?ssl=true'
-const pool = new Pool({connectionString: connectionString})
+const pool = new Pool({
+  connectionString: connectionString
+});
 
 //* Pages
 function loadHome(req, res) {
   console.log('Received a request for /chat-login');
 
-  var param = {message: ""};
+  if (req.session.username && req.session.userid) {
+    console.log('Redirecting to the rooms');
 
-  res.render('pages/assignments/chatroom/chat-login', param)
-  res.end()
+    res.redirect('/chat-rooms');
+    res.end;
+    return;
+  }
+
+  var param = {
+    message: ""
+  };
+
+  res.render('pages/assignments/chatroom/chat-login', param);
+  res.end();
 }
 
 function checkLogin(req, res) {
@@ -27,11 +39,14 @@ function checkLogin(req, res) {
   console.log("button : " + button);
 
   // check that we have recieved values to work with
-  if (!username.trim() || username == ""
-  || !password.trim() || password == "") {
+  if (!username.trim() || username == "" ||
+      !password.trim() || password == "") {
     console.log('missing information');
+
     // Let the user know they need to fill out the textboxes
-    var param = {message: "Please fill out both textboxes"};
+    var param = {
+      message: "Please fill out both textboxes"
+    };
 
     res.render('pages/assignments/chatroom/chat-login', param)
     res.end();
@@ -40,82 +55,52 @@ function checkLogin(req, res) {
 
   // check to see if we need to create a new user
   if (button == 'create') {
-    createUser(username, password, function (error) {
-      if (error) {
-        var param = {message: error};
-
-        res.render('pages/assignments/chatroom/chat-login', param)
-        res.end();
-        return;
-      }
-    });
+    createUser(res, req, username, password);
+  } else {
+    checkUser(res, req, username, password);
   }
-
-  // check to see if the username and password are correct
-  checkUser(username, password, function (error, result) {
-    if (error || result == null) {
-      var param = {message: error};
-
-      res.render('pages/assignments/chatroom/chat-login', param)
-      res.end();
-      return;
-    }
-
-    console.log("Data: " + result[0].user_password);
-    console.log("Data: " + result[0].user_id);
-
-    // check to see that we got a row back
-    if (result.length != 1) {
-      console.log('No returned results');
-      var param = {message: "Incorrect Username/Password"};
-
-      res.render('pages/assignments/chatroom/chat-login', param)
-      res.end();
-      return;
-    }
-
-    // check that the password provided matches the one in the database
-    if (result[0].user_password != password) {
-      console.log("Looking for: " + result[0].user_password);
-      var param = {message: "Incorrect Username/Password"};
-
-      res.render('pages/assignments/chatroom/chat-login', param)
-      res.end();
-      return;
-    }
-
-    // we only want to move on if we have passed each check
-    req.session.username = username;
-    req.session.password = password;
-    req.session.id = result[0].user_id;
-
-    res.redirect('/chat-rooms')
-    res.end();
-    return; 
-  });
 }
 
 function loadChatrooms(req, res) {
   console.log('Received a request for /chat-rooms');
 
   // check to see if we are logged in or not
-  if (!req.session.username) {
-    var param = {message: ""};
+  if (!req.session.username || !req.session.userid) {
+    console.log('Redirecting to the login');
 
-    res.render('pages/assignments/chatroom/chat-login', param)
-    res.end()
+    res.redirect('/chat-login');
+    res.end();
+    return;
   }
 
-  var param = {username: req.session.username,
-  id: req.session.id};
+  var param = {
+    username: req.session.username,
+    id: req.session.userid
+  };
 
   res.render('pages/assignments/chatroom/chat-rooms', param)
 }
 
 //* Functions
-function createUser(name, pass, callback) {
+function createUser(res, req, username, password) {
+  createUserAsync(username, password, function (error) {
+    if (error) {
+      var param = {
+        message: error
+      };
+
+      res.render('pages/assignments/chatroom/chat-login', param)
+      res.end();
+      return;
+    }
+
+    checkUser(res, req, username, password);
+  });
+}
+
+function createUserAsync(username, password, callback) {
   const sql = "INSERT INTO users (user_name, user_password) VALUES ($1, $2)";
-  const params = [name, pass];
+  const params = [username, password];
   
   pool.query(sql, params, function(err, results) {
     if (err) {
@@ -125,15 +110,70 @@ function createUser(name, pass, callback) {
       callback("Username has already been taken. Please choose another.");
       return;
     }
-    console.log('Created: ' + name + " " + pass);
+
+    // log that we created the user.
+    console.log('Created: ' + username + " " + password);
     callback(null);
     return;
   })
 }
 
-function checkUser(name, pass, callback) {
+function checkUser(res, req, username, password) {
+  checkUserAsync(username, function (error, data) {
+    if (error || data == null) {
+      var param = {
+        message: error
+      };
+
+      res.render('pages/assignments/chatroom/chat-login', param)
+      res.end();
+      return;
+    }
+
+    // check to see that we got a row back
+    if (data.length != 1) {
+      console.log('No returned results');
+      var param = {
+        message: "Incorrect Username/Password"
+      };
+
+      res.render('pages/assignments/chatroom/chat-login', param)
+      res.end();
+      return;
+    }
+
+    // we have returned results to look through
+
+    console.log("Data: " + data[0].user_password);
+    console.log("Data: " + data[0].user_id);
+
+    // check that the password provided matches the one in the database
+    if (data[0].user_password != password) {
+      console.log(password + " != " + data[0].user_password);
+      var param = {
+        message: "Incorrect Username/Password"
+      };
+
+      res.render('pages/assignments/chatroom/chat-login', param)
+      res.end();
+      return;
+    }
+
+    // we only want to move on if we have passed each check
+    req.session.username = username;
+    req.session.password = password;
+    req.session.userid = data[0].user_id;
+    req.session.save();
+
+    res.redirect('/chat-rooms')
+    res.end();
+    return; 
+  });
+}
+
+function checkUserAsync(username, callback) {
   const sql = "SELECT user_password, user_id FROM users WHERE user_name = $1";
-  const params = [name];
+  const params = [username];
 
   pool.query(sql, params, function(err, results) {
     if (err) {
@@ -143,6 +183,8 @@ function checkUser(name, pass, callback) {
       callback("Error in query: " + err, null);
       return;
     }
+
+    //var data = results.rows;
 
     console.log("Found result: " + JSON.stringify(results.rows));
 
