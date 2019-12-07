@@ -4,9 +4,10 @@
   <title>Chatrooms</title>
   <!-- Head -->
   <% include ../../../partials/head.ejs %>
+  <script src='js/rooms.js'></script>
 </head>
 
-<body class="chat container-fluid">
+<body class="chat container-fluid" onload="Refresh();">
   <!-- Header -->
   <% include ../../../partials/header.ejs %>
 
@@ -57,11 +58,15 @@
     </table>
 
     <div class="table-responsive scroll">
-      <form method="post" target="_blank" action="php/password-helper.php">
+      <form method="GET" target="_blank" action="/check-password">
         <table class="table table-striped table-hover table-items">
 
         <tbody id="results">
-
+          <tr>
+            <td>
+              <p>Loading all rooms . . .</p>
+            </td>
+          </tr>
         </tbody>
         
         </table>

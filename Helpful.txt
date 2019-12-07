@@ -32,3 +32,8 @@ heroku apps:rename kearns-cs313
 git status
 git add *
 git commit -m "comment for the commit"
+
+var id = jsonData.Search[i].imdbID;
+// v--- LOOK HOW NICE THIS IS!! ---v
+`<button onclick="foo('${id}')">Details</button>`;
+

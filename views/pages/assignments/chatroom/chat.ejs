@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en-US">
+	
+<head>
+  <title>Chat <%= room %></title>
+  <!-- Head -->
+  <% include ../../../partials/head.ejs %>
+  <script src="js/chat.js"></script>
+</head>
+
+<!--body class="container-fluid" onload="Setup()"-->
+<body class="container-fluid" onload="Setup()">
+  <!-- Content -->
+  <input type="hidden" id="roomid" name="roomid" value="<%= roomid %>">
+
+  <br>
+  <div id="content" class="container">
+    <h1>Welcome <%= username %>!</h1>
+    <h2 class="text-center"><%= room %></h2>
+
+    <div class="table-responsive chat" id="chat">
+      <table class="table table-striped table-hover table-items">
+        <tbody id="results">
+
+        </tbody>
+      </table>
+    </div>
+
+    <br>
+
+    <div class="form-group">
+      <textarea rows="5" name="message" id="message" class="form-control" placeholder="message" onkeypress="return CheckEnterPressed();"></textarea>
+    </div>
+    
+    <button class="btn btn-primary btn-lg" onclick="SendMessage();">Send</button>
+  </div>
+
+  <!-- Footer -->
+  <% include ../../../partials/footer.ejs %>
+
+</body>
+</html>
